@@ -3,7 +3,6 @@ project(compute)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(glm REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 include_directories("${CMAKE_SOURCE_DIR}/src" "${CMAKE_SOURCE_DIR}/lib")
 

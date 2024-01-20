@@ -68,8 +68,8 @@ void Graphics::init() {
     quad_shader->use();
     quad_shader->setInt("tex_sampler", 0);
 
-    mandelbrot_shader = new ComputeShader("assets/shaders/mandelbrot.comp");
-    raytracing_shader = new ComputeShader("assets/shaders/raytracing.comp");
+    mandelbrot_shader = new ComputeShader("assets/shaders/mandelbrot.glsl");
+    raytracing_shader = new ComputeShader("assets/shaders/raytracing.glsl");
 }
 
 void Graphics::run() {
