@@ -37,12 +37,14 @@ vec3 rayColor() {
 void main() {
     ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
 
-    float max_x = 5.0;
-    float max_y = 5.0;
+    vec2 image_size = imageSize(img_output);
+    float aspect_ratio = image_size.x / image_size.y;
 
-    ivec2 dims = imageSize(img_output);
-    float x = (float(pixel_coords.x * 2.0 - dims.x) / dims.x);
-    float y = (float(pixel_coords.y * 2.0 - dims.y) / dims.y);
+    float viewport_height = 2.0;
+    float viewport_width = viewport_height / aspect_ratio;
+
+    float x = (float(pixel_coords.x * 2.0 - image_size.x) / image_size.x) * aspect_ratio;
+    float y = (float(pixel_coords.y * 2.0 - image_size.y) / image_size.y);
 
     ray_orig = vec3(0.0, 0.0, 0.0);
     ray_dir = -vec3(x, y, 1.0);

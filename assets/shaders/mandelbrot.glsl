@@ -8,7 +8,10 @@ void main() {
 
     ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
 
-    vec2 c = vec2(pixel_coords) / vec2(imageSize(img_output) / 4.0) - 2.0;
+    vec2 image_size = imageSize(img_output);
+    vec2 c;
+    c.y = float(pixel_coords.y) / (image_size.x / 4.0) - 2.0 * (image_size.y / image_size.x);
+    c.x = float(pixel_coords.x) / (image_size.x / 4.0) - 2.0;
     vec2 z = c;
 
     int max_iters = 50;

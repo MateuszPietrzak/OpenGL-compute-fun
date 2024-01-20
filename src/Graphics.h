@@ -41,6 +41,8 @@ private:
     };
 
     GLFWwindow *window;
+    
+    uint32_t win_width = 1024, win_height = 1024;
 
     uint32_t vao, vbo;
 
@@ -53,8 +55,6 @@ private:
     bool key_down = false;
 
     uint32_t screen_texture;
-
-    uint32_t tex_w, tex_h;
 };
 
 

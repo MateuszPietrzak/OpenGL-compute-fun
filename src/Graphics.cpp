@@ -14,12 +14,28 @@ void Graphics::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+//    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    window = glfwCreateWindow(512, 512, "OpenGL", nullptr, nullptr);
+
+    window = glfwCreateWindow(win_width, win_height, "OpenGL", nullptr, nullptr);
     if (window == nullptr) {
         throw std::runtime_error("No window");
     }
+    glfwSetWindowUserPointer(window, this);
+
+    glfwSetWindowSizeCallback(window, [](GLFWwindow * window, int width, int height) {
+        Graphics* graphics = (Graphics*) glfwGetWindowUserPointer(window);
+        graphics->win_width = width;
+        graphics->win_height = height;
+        std::cout << "New width: " << graphics->win_width << "\n";
+        std::cout << "New height: " << graphics->win_height << "\n";
+        glViewport(0, 0, graphics->win_width, graphics->win_height);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, graphics->screen_texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, graphics->win_width, graphics->win_height, 0, GL_RGBA,
+                     GL_FLOAT, nullptr);
+        glBindImageTexture(0, graphics->screen_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+    });
 
     glfwMakeContextCurrent(window);
 
@@ -27,12 +43,10 @@ void Graphics::init() {
         throw std::runtime_error("Sad no glad :(");
     }
 
-    glViewport(0, 0, 512, 512);
+    glViewport(0, 0, win_width, win_height);
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-    tex_w = 512;
-    tex_h = 512;
     glGenTextures(1, &screen_texture);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, screen_texture);
@@ -40,7 +54,7 @@ void Graphics::init() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tex_w, tex_h, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, win_width, win_height, 0, GL_RGBA,
                  GL_FLOAT, nullptr);
     glBindImageTexture(0, screen_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
 
@@ -99,7 +113,7 @@ void Graphics::run() {
                 raytracing_shader->use();
                 break;
         }
-        glDispatchCompute(tex_w, tex_h, 1);
+        glDispatchCompute(win_width, win_height, 1);
 
         glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
