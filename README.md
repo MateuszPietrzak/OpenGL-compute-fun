@@ -13,5 +13,11 @@ Press space to cycle through shaders.
 
 As a warm-up I created a Mandelbrot set visualizer.
 
+## Raytracer WIP
+![scr_423](https://github.com/MateuszPietrzak/OpenGL-compute-fun/assets/60319969/e86a2738-ab52-45b4-8f35-4fa52168b203)
+
+Implementing a simple raytracer following the "Ray Tracing in One Weekend" book.
+
 ## Resources
-https://antongerdelan.net/opengl/compute.html][https://antongerdelan.net/opengl/compute.html
+- https://antongerdelan.net/opengl/compute.html
+- https://raytracing.github.io/books/RayTracingInOneWeekend.html
